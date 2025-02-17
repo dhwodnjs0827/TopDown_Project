@@ -190,7 +190,7 @@ MonoBehaviour:
   attackRange: 10
   target:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   isOnKnockback: 1
   knockbackPower: 0.1
   knockbackTime: 0.5
@@ -201,4 +201,4 @@ MonoBehaviour:
   spread: 1
   numberofProjectilesPerShot: 3
   multipleProjectilesAngel: 3
-  projectileColor: {r: 1, g: 1, b: 1, a: 0}
+  projectileColor: {r: 1, g: 1, b: 1, a: 1}

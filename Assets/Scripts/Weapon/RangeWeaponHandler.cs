@@ -70,6 +70,14 @@ public class RangeWeaponHandler : WeaponHandler
         }
     }
 
+    private ProjectileManager projectileManager;
+
+    protected override void Start()
+    {
+        base.Start();
+        projectileManager = ProjectileManager.Instance;
+    }
+
     public override void Attack()
     {
         base.Attack();
@@ -91,7 +99,7 @@ public class RangeWeaponHandler : WeaponHandler
 
     private void CreateProjectile(Vector2 _lookDirection, float angle)
     {
-
+        projectileManager.ShootBullet(this, projectileSpawnPosition.position, RotateVector2(_lookDirection, angle));
     }
     private static Vector2 RotateVector2(Vector2 v, float degree)
     {
