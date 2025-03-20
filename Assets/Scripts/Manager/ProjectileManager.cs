@@ -39,7 +39,7 @@ public class ProjectileManager : MonoBehaviour
         projectileController.Init(direction, rangeWeaponHandler, this);
     }
 
-    public void CreateImpactParticlesAtPostion(Vector3 position, RangeWeaponHandler weaponHandler)
+    public void CreateImpactParticlesAtPosition(Vector3 position, RangeWeaponHandler weaponHandler)
     {
         impactParticleSystem.transform.position = position;
         ParticleSystem.EmissionModule em = impactParticleSystem.emission;

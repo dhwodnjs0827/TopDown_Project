@@ -99,9 +99,9 @@ public class ProjectileController : MonoBehaviour, IPoolable
     {
         if (createFx)
         {
-            projectileManager.CreateImpactParticlesAtPostion(position, rangeWeaponHandler);
+            projectileManager.CreateImpactParticlesAtPosition(position, rangeWeaponHandler);
         }
-
+		
         // Destroy(this.gameObject);
         OnDespawn();
     }

@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 68484201}
   - component: {fileID: 68484200}
+  - component: {fileID: 68484202}
   m_Layer: 0
   m_Name: ProjectileManager
   m_TagString: Untagged
@@ -172,6 +173,21 @@ Transform:
   - {fileID: 1334483557}
   m_Father: {fileID: 163179501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &68484202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 68484199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 564164b2c03562b4f83dd8fbd585d38a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabs:
+  - {fileID: 5320326260321859833, guid: 77c9a4c16e33b9e489087d828c8109dd, type: 3}
+  - {fileID: 6266355117179918635, guid: 2fb3db75bcdb14b469544953683cf7d3, type: 3}
 --- !u!1 &101801706
 GameObject:
   m_ObjectHideFlags: 0
@@ -3172,6 +3188,9 @@ MonoBehaviour:
   gizmoColor: {r: 1, g: 0, b: 0, a: 0.3}
   timeBetweenSpawns: 0.2
   timeBetweenWaves: 1
+  itemPrefabs:
+  - {fileID: 5477612501575079571, guid: e976d873b539fcd449325ded515790a7, type: 3}
+  - {fileID: 6337189379698855562, guid: c2b154bc5fd7de147b4f815ae721b229, type: 3}
 --- !u!4 &710618839
 Transform:
   m_ObjectHideFlags: 0
