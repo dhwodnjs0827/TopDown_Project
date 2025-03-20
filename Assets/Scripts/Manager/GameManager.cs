@@ -9,15 +9,14 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     public static bool isFirstLoading = true;
 
-    public PlayerController player
-    {
-        get; private set;
-    }
+    public PlayerController player { get; private set; }
     private ResourceController _playerResourceController;
 
     [SerializeField] private int currentWaveIndex = 0;
 
     private EnemyManager enemyManager;
+
+    private CameraShake cameraShake;
 
     private void Awake()
     {
@@ -33,6 +32,9 @@ public class GameManager : MonoBehaviour
 
         enemyManager = GetComponentInChildren<EnemyManager>();
         enemyManager.Init(this);
+
+        cameraShake = FindObjectOfType<CameraShake>();
+        MainCameraShake();
     }
 
     private void Start()
@@ -69,5 +71,10 @@ public class GameManager : MonoBehaviour
     {
         enemyManager.StopWave();
         uiManager.SetGameOver();
+    }
+
+    public void MainCameraShake()
+    {
+        cameraShake.ShakeCamera(1, 1, 1);
     }
 }
