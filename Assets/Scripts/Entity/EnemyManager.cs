@@ -6,16 +6,15 @@ public class EnemyManager : MonoBehaviour
 {
     private Coroutine waveRoutine;
 
-    [SerializeField]
-    private List<GameObject> enemyPrefabs; // »ý¼ºÇÒ Àû ÇÁ¸®ÆÕ ¸®½ºÆ®
+    [SerializeField] private List<GameObject> enemyPrefabs; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 
-    [SerializeField]
-    private List<Rect> spawnAreas; // ÀûÀ» »ý¼ºÇÒ ¿µ¿ª ¸®½ºÆ®
+    private Dictionary<string, GameObject> enemyPrefabDict;
 
-    [SerializeField]
-    private Color gizmoColor = new Color(1, 0, 0, 0.3f); // ±âÁî¸ð »ö»ó
+    [SerializeField] private List<Rect> spawnAreas; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 
-    private List<EnemyController> activeEnemies = new List<EnemyController>(); // ÇöÀç È°¼ºÈ­µÈ Àûµé
+    [SerializeField] private Color gizmoColor = new Color(1, 0, 0, 0.3f); // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+
+    private List<EnemyController> activeEnemies = new List<EnemyController>(); // ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     private bool enemySpawnComplite;
 
@@ -27,6 +26,12 @@ public class EnemyManager : MonoBehaviour
     public void Init(GameManager gameManager)
     {
         this.gameManager = gameManager;
+
+        enemyPrefabDict = new Dictionary<string, GameObject>();
+        foreach (var prefab in enemyPrefabs)
+        {
+            enemyPrefabDict[prefab.name] = prefab;
+        }
     }
 
     public void StartWave(int waveCount)
@@ -60,35 +65,44 @@ public class EnemyManager : MonoBehaviour
         enemySpawnComplite = true;
     }
 
-    private void SpawnRandomEnemy()
+    private void SpawnRandomEnemy(string prefabName = null)
     {
         if (enemyPrefabs.Count == 0 || spawnAreas.Count == 0)
         {
-            Debug.LogWarning("Enemy Prefabs ¶Ç´Â Spawn Areas°¡ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogWarning("Enemy Prefabs ï¿½Ç´ï¿½ Spawn Areasï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½.");
             return;
         }
 
-        // ·£´ýÇÑ Àû ÇÁ¸®ÆÕ ¼±ÅÃ
-        GameObject randomPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        GameObject randomPrefab;
+        if (prefabName == null)
+        {
+            randomPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+        }
+        else
+        {
+            randomPrefab = enemyPrefabDict[prefabName];
+        }
 
-        // ·£´ýÇÑ ¿µ¿ª ¼±ÅÃ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Rect randomArea = spawnAreas[Random.Range(0, spawnAreas.Count)];
 
-        // Rect ¿µ¿ª ³»ºÎÀÇ ·£´ý À§Ä¡ °è»ê
+        // Rect ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
         Vector2 randomPosition = new Vector2(
             Random.Range(randomArea.xMin, randomArea.xMax),
             Random.Range(randomArea.yMin, randomArea.yMax)
         );
 
-        // Àû »ý¼º ¹× ¸®½ºÆ®¿¡ Ãß°¡
-        GameObject spawnedEnemy = Instantiate(randomPrefab, new Vector3(randomPosition.x, randomPosition.y), Quaternion.identity);
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½
+        GameObject spawnedEnemy = Instantiate(randomPrefab, new Vector3(randomPosition.x, randomPosition.y),
+            Quaternion.identity);
         EnemyController enemyController = spawnedEnemy.GetComponent<EnemyController>();
         enemyController.Init(this, gameManager.player.transform);
 
         activeEnemies.Add(enemyController);
     }
 
-    // ±âÁî¸ð¸¦ ±×·Á ¿µ¿ªÀ» ½Ã°¢È­ (¼±ÅÃµÈ °æ¿ì¿¡¸¸ Ç¥½Ã)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½È­ (ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ Ç¥ï¿½ï¿½)
     private void OnDrawGizmosSelected()
     {
         if (spawnAreas == null)
@@ -108,5 +122,42 @@ public class EnemyManager : MonoBehaviour
         activeEnemies.Remove(enemy);
         if (enemySpawnComplite && activeEnemies.Count == 0)
             gameManager.EndOfWave();
+    }
+
+    public void StartStage(WaveData waveData)
+    {
+        if (waveRoutine != null)
+        {
+            StopCoroutine(waveRoutine);
+        }
+
+        waveRoutine = StartCoroutine(SpawnStart(waveData));
+    }
+
+    private IEnumerator SpawnStart(WaveData waveData)
+    {
+        enemySpawnComplite = false;
+        yield return new WaitForSeconds(timeBetweenWaves);
+
+        for (int i = 0; i < waveData.monsters.Length; i++)
+        {
+            yield return new WaitForSeconds(timeBetweenWaves);
+            
+            MonsterSpawnData monsterSpawnData = waveData.monsters[i];
+            for (int j = 0; j < monsterSpawnData.spawnCount; j++)
+            {
+                SpawnRandomEnemy(monsterSpawnData.monsterType);
+            }
+        }
+
+        if (waveData.hasBoss)
+        {
+            yield return new WaitForSeconds(timeBetweenWaves);
+            
+            gameManager.MainCameraShake();
+            SpawnRandomEnemy(waveData.bossType);
+        }
+
+        enemySpawnComplite = true;
     }
 }
